@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.mongo.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: {{ .Values.mongo.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.mongo.servicePort }}
+      targetPort: {{ .Values.mongo.serviceTargetPort }}
+  type: ClusterIP

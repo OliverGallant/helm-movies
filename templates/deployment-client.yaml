@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Values.client.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.client.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.client.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.client.name }}
+    spec:
+      containers:
+        - name: {{ .Values.client.containerName }}
+          image: '{{ .Values.client.image.repository }}:{{ .Values.client.image.tag }}'
+          ports:
+            - containerPort: {{ .Values.client.containerPort }}
+              protocol: TCP
+          env:
+            - name: REACT_APP_GAL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.client.configMapName }}
+                  key: {{ .Values.client.configMapKey }}
+

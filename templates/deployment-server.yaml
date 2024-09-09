@@ -1,0 +1,28 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Values.server.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.server.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.server.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.server.name }}
+    spec:
+      containers:
+        - name: {{ .Values.server.containerName }}
+          image: '{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}'
+          ports:
+            - containerPort: {{ .Values.server.containerPort }}
+              protocol: TCP
+          env:
+            - name: REACT_APP_MONGOSERVICE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.server.configMapName }}
+                  key: {{ .Values.server.configMapKey }}
+
