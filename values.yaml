@@ -2,7 +2,7 @@ namespace: idan-helm-test
 
 client:
   name: client
-  replicaCount: 1
+  replicaCount: 2
   containerName: httpd
   image:
     repository: gallantos16/my-node-app7
